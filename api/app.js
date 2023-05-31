@@ -18,8 +18,11 @@ app.post("/buytickets", async (req, res) => {
         const web3 = new Web3(RPC_URL);
         const account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY);
         web3.eth.accounts.wallet.add(account);
+
         const shop = new web3.eth.Contract(SHOP_ABI, SHOP_ADDRESS);
-        const tx = await shop.methods.grantTickets(buyerAddress, id, amount).send({ from: account.address });
+        // Estimate Gas
+        const gasEstimate = await shop.methods.grantTickets(buyerAddress, id, amount).estimateGas({ from: account.address });
+        const tx = await shop.methods.grantTickets(buyerAddress, id, amount).send({ from: account.address, gas: gasEstimate });
         if (Boolean(tx)) {
             console.log(tx);
         }
@@ -40,7 +43,9 @@ app.post("/createticketsale", async (req, res) => {
         const account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY);
         web3.eth.accounts.wallet.add(account);
         const shop = new web3.eth.Contract(SHOP_ABI, SHOP_ADDRESS);
-        const tx = await shop.methods.createTicketSale(amountOfEachTicketById).send({ from: account.address });
+        // Estimate Gas
+        const gasEstimate = await shop.methods.createTicketSale(amountOfEachTicketById).estimateGas({ from: account.address });
+        const tx = await shop.methods.createTicketSale(amountOfEachTicketById).send({ from: account.address, gas: gasEstimate });
         if (Boolean(tx)) {
             console.log(tx);
             res.status(200).json({ message: "Mint tickets operation successful", transaction: tx });
