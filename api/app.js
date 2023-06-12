@@ -26,7 +26,7 @@ app.post("/buytickets", async (req, res) => {
         if (Boolean(tx)) {
             console.log(tx);
         }
-        res.json({ message: "Buy tickets operation successful", transaction: tx });
+        res.status(200).json({ message: "Buy tickets operation successful", transaction: tx });
     } catch (error) {
         console.error(error);
         res.status(500).json({
@@ -57,6 +57,29 @@ app.post("/createticketsale", async (req, res) => {
         });
     }
 });
+app.post("/transfer", async (req, res) => {
+    try {
+        const { from, to, id, amount } = req.body;
+        console.log(req.body)
+        const web3 = new Web3(RPC_URL)
+        const account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY);
+        web3.eth.accounts.wallet.add(account);
+        const shop = new web3.eth.Contract(SHOP_ABI, SHOP_ADDRESS);
+
+        const gasEstimate = await shop.methods.transferBetweenAccounts(from,to,id,amount).estimateGas({ from: account.address });
+
+        const tx = await shop.methods.transferBetweenAccounts(from, to, id, amount).send({ from: account.address, gas: gasEstimate });
+        
+        if (Boolean(tx)) {
+            console.log(tx);
+        }
+        res.status(200).json({ message: "Tokens Transfered!", transaction: tx });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Something went wrong", error: error });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`API server listening at http://localhost:${PORT}`);
 });

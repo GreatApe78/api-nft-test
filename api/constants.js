@@ -129,6 +129,34 @@ const SHOP_ABI = [
         "inputs": [
             {
                 "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferBetweenAccounts",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "",
                 "type": "address"
             },
@@ -209,7 +237,7 @@ const SHOP_ABI = [
 
 
 
-SHOP_ADDRESS = "0x8dcfd37389560B9e37B68F02c4e49fbB4757E1c9"//Get the contract's address
+SHOP_ADDRESS = "0xcF09e520EcFF5F93C2100666ce1578e7Ed153dEd"//Get the contract's address
 //BINANCE ADDRESS ABOVE
 
 module.exports = {
