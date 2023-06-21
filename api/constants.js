@@ -9,11 +9,6 @@ const SHOP_ABI = [
     {
         "inputs": [
             {
-                "internalType": "contract NFTicket",
-                "name": "_nfticket",
-                "type": "address"
-            },
-            {
                 "internalType": "address",
                 "name": "_newOwner",
                 "type": "address"
@@ -42,18 +37,47 @@ const SHOP_ABI = [
         "type": "event"
     },
     {
-        "inputs": [],
-        "name": "nfticket",
-        "outputs": [
+        "anonymous": false,
+        "inputs": [
             {
-                "internalType": "contract NFTicket",
-                "name": "",
+                "indexed": false,
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "_uri",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_quantitiesById",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_numberOfTicketTypes",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_eventAddress",
                 "type": "address"
             }
         ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
+        "name": "PartyCreation",
+        "type": "event"
     },
     {
         "inputs": [],
@@ -66,8 +90,26 @@ const SHOP_ABI = [
             }
         ],
         "stateMutability": "view",
-        "type": "function",
-        "constant": true
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "partiesEverCreated",
+        "outputs": [
+            {
+                "internalType": "contract NFTicket",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [],
@@ -92,12 +134,37 @@ const SHOP_ABI = [
     {
         "inputs": [
             {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_uri",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_collectionBannerImageUrl",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_numberOfTicketTypes",
+                "type": "uint256"
+            },
+            {
                 "internalType": "uint256[]",
-                "name": "listOfQuantitiesById",
+                "name": "_quantitiesById",
                 "type": "uint256[]"
             }
         ],
-        "name": "createTicketSale",
+        "name": "createPartyEvent",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -105,22 +172,27 @@ const SHOP_ABI = [
     {
         "inputs": [
             {
+                "internalType": "contract NFTicket",
+                "name": "eventAddress",
+                "type": "address"
+            },
+            {
                 "internalType": "address",
-                "name": "_buyer",
+                "name": "buyer",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "_id",
+                "name": "id",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_amount",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
-        "name": "grantTickets",
+        "name": "buyTickets",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -128,29 +200,122 @@ const SHOP_ABI = [
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "_from",
+                "internalType": "contract NFTicket",
+                "name": "eventAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_to",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "_id",
+                "name": "id",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_amount",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
-        "name": "transferBetweenAccounts",
+        "name": "transferTickets",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract NFTicket",
+                "name": "eventAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getOwnedTicketsOf",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPartiesEverCreated",
+        "outputs": [
+            {
+                "internalType": "contract NFTicket[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract NFTicket",
+                "name": "eventAddress",
+                "type": "address"
+            }
+        ],
+        "name": "getPartyEvent",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "symbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "uri",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "collectionBannerImageUrl",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "numberOfTicketTypes",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "quantitiesById",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct Shop.PartyEvent",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -190,8 +355,7 @@ const SHOP_ABI = [
             }
         ],
         "stateMutability": "pure",
-        "type": "function",
-        "constant": true
+        "type": "function"
     },
     {
         "inputs": [
@@ -230,14 +394,13 @@ const SHOP_ABI = [
             }
         ],
         "stateMutability": "pure",
-        "type": "function",
-        "constant": true
+        "type": "function"
     }
 ]
 
 
 
-SHOP_ADDRESS = "0xcF09e520EcFF5F93C2100666ce1578e7Ed153dEd"//Get the contract's address
+SHOP_ADDRESS = "0x0dC59E86F6B1229C63815FaC746c50b60a1fB97a"//Get the contract's address
 //BINANCE ADDRESS ABOVE
 
 module.exports = {
