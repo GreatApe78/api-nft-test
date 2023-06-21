@@ -97,7 +97,7 @@ app.post("/create-party-event", async (req, res) => {
 
 //transfer tickets route
 
-app.post("/buytickets", async (req, res) => {
+app.post("/buy-tickets", async (req, res) => {
     const incomingData = req.body;
     try {
         const web3 = new Web3(RPC_URL);
@@ -167,7 +167,7 @@ app.post("/transfer-tickets", async (req, res) => {
         res.status(500).json({ message: "Internal Error!", error: error });
     }
 });
-app.get("/partyEvent/:eventAddress", async (req, res) => {
+app.get("/party-event/:eventAddress", async (req, res) => {
     const incomingData = req.params;
     //console.log(req.params.eventAddress)
     try {
